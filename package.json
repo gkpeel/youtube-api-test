@@ -5,8 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "webpack --mode production",
-		"start": "webpack-dev-server --open"
+		"build": "webpack --env.ENVIRONMENT=production --config webpack.config.prod.babel.js",
+		"start:dev": "webpack-dev-server --env.ENVIRONMENT=development --config webpack.config.dev.babel.js"
 	},
 	"keywords": [],
 	"author": "",
@@ -19,6 +19,7 @@
 		"@babel/register": "^7.9.0",
 		"babel-loader": "^8.1.0",
 		"css-loader": "^3.4.2",
+		"dotenv": "^8.2.0",
 		"file-loader": "^6.0.0",
 		"html-webpack-plugin": "^4.0.2",
 		"react": "^16.13.1",
@@ -29,5 +30,9 @@
 		"webpack": "^4.42.1",
 		"webpack-cli": "^3.3.11",
 		"webpack-dev-server": "^3.10.3"
+	},
+	"dependencies": {
+		"google-auth-library": "^6.0.0",
+		"googleapis": "^49.0.0"
 	}
 }

@@ -1,0 +1,14 @@
+youtube power hour web app
+
+CORE FUNCTIONALITY
+- plays 60 videos for one-minute increments
+    phase1:
+        - hardcoded playlist
+        - deal with commcericals if necessary
+        - no transition alert
+    phase2:
+        - age verification/consent modal
+        - create user input
+        - reorder list
+    phase3: 
+        - save 
