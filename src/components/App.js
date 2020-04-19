@@ -1,39 +1,40 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { Component } from 'react';
+import { StyledApp, Container, UpNextContainer, VideoPlayerContainer } from '../utils/containers';
 import Header from './Header';
 import VideoPlayer from './VideoPlayer';
+import getVideo from '../apis/youtube';
 
-const StyledApp = styled.div`
-	min-height: 100vh;
-	background-color: #ddd;
-`;
+class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			started: false,
+			currentVideo: '',
+			playlist: ['pok8H_KF1FA', 'DzwkcbTQ7ZE', 'wXhTHyIgQ_U'],
+			playlistData: [],
+		};
+	}
 
-const Container = styled.div`
-	max-width: 1024px;
-	margin: 0 auto;
-`;
+	componentDidMount() {
+		this.state.playlist.forEach(async (vidId) => {
+			const data = await getVideo(vidId);
+			this.setState({ playlistData: [...this.state.playlistData, data] });
+		});
+		this.setState({ currentVideo: this.state.playlist[0] });
+	}
 
-const UpNextContainer = styled.div`
-	background-color: navy;
-`;
-
-const VideoPlayerContainer = styled.div`
-	min-height: 300px;
-	background-color: olive;
-`;
-
-const App = (props) => {
-	return (
-		<StyledApp>
-			<Container>
-				<Header>Power Hour</Header>
-				<VideoPlayerContainer>
-					<VideoPlayer />
-				</VideoPlayerContainer>
-				<UpNextContainer>Up Next List</UpNextContainer>
-			</Container>
-		</StyledApp>
-	);
-};
+	render() {
+		return (
+			<StyledApp>
+				<Container>
+					<Header>Power Hour</Header>
+					<VideoPlayer id={this.state.currentVideo} />
+					<button onClick={this.startPlaylist}>Start Power Hour</button>
+					<UpNextContainer>Up Next List</UpNextContainer>
+				</Container>
+			</StyledApp>
+		);
+	}
+}
 
 export default App;

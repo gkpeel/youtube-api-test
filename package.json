@@ -14,9 +14,11 @@
 	"devDependencies": {
 		"@babel/core": "^7.9.0",
 		"@babel/plugin-proposal-class-properties": "^7.8.3",
+		"@babel/plugin-transform-runtime": "^7.9.0",
 		"@babel/preset-env": "^7.9.0",
 		"@babel/preset-react": "^7.9.4",
 		"@babel/register": "^7.9.0",
+		"@babel/runtime": "^7.9.2",
 		"babel-loader": "^8.1.0",
 		"css-loader": "^3.4.2",
 		"dotenv": "^8.2.0",
@@ -32,7 +34,9 @@
 		"webpack-dev-server": "^3.10.3"
 	},
 	"dependencies": {
+		"axios": "^0.19.2",
 		"google-auth-library": "^6.0.0",
-		"googleapis": "^49.0.0"
+		"googleapis": "^49.0.0",
+		"react-player": "^1.15.3"
 	}
 }
