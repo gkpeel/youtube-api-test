@@ -9,10 +9,17 @@ class App extends Component {
 		super(props);
 		this.state = {
 			started: false,
-			currentVideo: '',
+			currentVideoIndex: 0,
 			playlist: ['pok8H_KF1FA', 'DzwkcbTQ7ZE', 'wXhTHyIgQ_U'],
 			playlistData: [],
 		};
+	}
+
+	setNextIndex = () => {
+		const nextIndex = this.state.currentVideoIndex + 1;
+		console.log(nextIndex)
+		console.log('set cb')
+		this.setState({ currentVideoIndex: this.state.currentVideoIndex + 1 })
 	}
 
 	componentDidMount() {
@@ -20,7 +27,7 @@ class App extends Component {
 			const data = await getVideo(vidId);
 			this.setState({ playlistData: [...this.state.playlistData, data] });
 		});
-		this.setState({ currentVideo: this.state.playlist[0] });
+		this.setState({ currentVideo: this.state.playlist[this.state.currentVideoIndex] });
 	}
 
 	render() {
@@ -28,7 +35,10 @@ class App extends Component {
 			<StyledApp>
 				<Container>
 					<Header>Power Hour</Header>
-					<VideoPlayer id={this.state.currentVideo} />
+					<VideoPlayer
+						id={this.state.playlist[this.state.currentVideoIndex]}
+						setNextIndex={this.setNextIndex}
+					/>
 					<button onClick={this.startPlaylist}>Start Power Hour</button>
 					<UpNextContainer>Up Next List</UpNextContainer>
 				</Container>
