@@ -5,7 +5,7 @@ import { VideoPlayerContainer } from '../utils/containers';
 
 // Once video has played for 20 seconds after the startTime, fire the callback
 const trackTiming = (obj, startTime, cb) => {
-	if (obj.playedSeconds > startTime + 60) {
+	if (obj.playedSeconds > startTime + 10) {
 		cb();
 	}
 };
@@ -26,9 +26,10 @@ const VideoPlayer = (props) => {
 		<VideoPlayerContainer>
 			<ReactPlayer
 				url={setUrl(props.currentVideo, startTime)}
-				controls={true}
+				controls={false}
 				playing={true}
 				width={'100%'}
+				height={'100%'}
 				onProgress={(obj) => {
 					trackTiming(obj, startTime, props.incrementIndex)
 				}}

@@ -2,21 +2,32 @@ import styled from 'styled-components';
 
 const StyledApp = styled.div`
 	min-height: 100vh;
-	background-color: #ddd;
+	display: flex;
+	align-items: center;
+	background-color: #121212;
+	color: #fff;
 `;
 
 const Container = styled.div`
-	max-width: 1024px;
+	min-width: 80%;
 	margin: 0 auto;
 `;
 
-const UpNextContainer = styled.div`
-	background-color: navy;
-`;
+const PlayerContainer = styled.div`
+	display: flex;
+`
 
 const VideoPlayerContainer = styled.div`
-	min-height: 300px;
-	background-color: olive;
+	height: 75vh;
+	flex-grow: 1;
 `;
 
-export { StyledApp, Container, UpNextContainer, VideoPlayerContainer };
+const PreviewContainer = styled.div`
+	max-width: 350px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-left: 1rem;
+`
+
+export { StyledApp, Container, VideoPlayerContainer, PlayerContainer, PreviewContainer };
