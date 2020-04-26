@@ -1,36 +1,45 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
+import { parse, toSeconds } from 'iso8601-duration';
 import { VideoPlayerContainer } from '../utils/containers';
 
-const BASE_EMBED_URL1 = 'https://www.youtube.com/embed/';
-const BASE_EMBED_URL2 = '?autoplay=1&controls=0&disablekb=1&end=60&modestbranding=1&start=30&color=white&iv_load_policy=3';
-
-const trackTiming = (obj, cb) => {
-	if (obj.playedSeconds > 10) {
+// Once video has played for 20 seconds after the startTime, fire the callback
+const trackTiming = (obj, startTime, cb) => {
+	if (obj.playedSeconds > startTime + 60) {
 		cb();
 	}
 };
 
+const setStartTime = (data) => {
+	const isoDuration = toSeconds(parse(data))
+	return Math.floor(Math.random() * (isoDuration - 61))
+}
+
+const setUrl = (data, start) => {
+	return `https://www.youtube.com/watch?v=${data}&start=${start}`
+}
+
 const VideoPlayer = (props) => {
-	console.log(props)
-	if (!props.id) {
-		return null;
-	} else {
-		const embedUrl = `${BASE_EMBED_URL1}${props.id}${BASE_EMBED_URL2}`;
-		return (
-			<VideoPlayerContainer>
-				<ReactPlayer
-					url={`https://www.youtube.com/watch?v=${props.id}`}
-					controls={true}
-					playing={true}
-					width={'100%'}
-					onProgress={(obj) => {
-						trackTiming(obj, props.setNextIndex)
-					}}
-				/>
-			</VideoPlayerContainer>
-		);
-	}
+
+	const startTime = setStartTime(props.duration)
+	return (
+		<VideoPlayerContainer>
+			<ReactPlayer
+				url={setUrl(props.currentVideo, startTime)}
+				controls={true}
+				playing={true}
+				width={'100%'}
+				onProgress={(obj) => {
+					trackTiming(obj, startTime, props.incrementIndex)
+				}}
+				config={{
+					youtube: {
+						preload: true
+					}
+				}}
+			/>
+		</VideoPlayerContainer>
+	)
 };
 
 export default VideoPlayer;

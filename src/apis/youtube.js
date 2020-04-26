@@ -1,18 +1,19 @@
 import axios from 'axios';
 
-const getVideo = async (videoID) => {
-	if (!videoID) {
+const getData = (vidId) => {
+	if (!vidId) {
 		return null;
 	}
-	const response = await axios.get('/videos', {
+
+	const options = {
 		baseURL: 'https://www.googleapis.com/youtube/v3',
 		params: {
-			part: 'snippet',
+			part: 'snippet,contentDetails,player',
 			key: process.env.YT_API_KEY,
-			id: videoID,
-		},
-	});
-	return response;
+			id: vidId,
+		}
+	}
+	return axios.get('/videos', options)
 };
 
-export default getVideo;
+export default getData;
