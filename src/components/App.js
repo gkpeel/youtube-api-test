@@ -3,7 +3,9 @@ import getData from '../apis/youtube'
 import Header from './Header'
 import VideoPlayer from './VideoPlayer'
 import PreviewItem from './PreviewItem'
-import { StyledApp, Container, PlayerContainer, PreviewContainer } from '../utils/containers'
+import { StyledApp, Container, PlayerContainer } from '../utils/containers'
+import TopMenu from './Menu'
+import { Sidebar, Segment, Menu } from 'semantic-ui-react'
 
 function App() {
     // Hardcoded Youtube Video IDs
@@ -29,35 +31,36 @@ function App() {
 
     return (
         <StyledApp>
-            <Container>
-                <Header>Your Power Hour</Header>
-                {contentLoaded ? (
-                    <PlayerContainer>
+            <TopMenu />
+            <div style={{ flexGrow: 1, display: "flex", alignItems: "stretch" }}>
+                <Segment inverted style={{ flexGrow: 1 }}>
+                    {contentLoaded ? (
                         <VideoPlayer
                             currentVideo={playlist.videos[currentIndex].id}
                             duration={playlist.videos[currentIndex].contentDetails.duration}
                             incrementIndex={incrementIndex}
                         />
-                        <PreviewContainer>
-                            {playlist.videos.map((video, i) => {
-                                if (i <= currentIndex + 4 && i >= currentIndex) {
-                                    return (
-                                        <PreviewItem
-                                            key={i}
-                                            image={video.snippet.thumbnails.default.url}
-                                        >
-                                            {video.snippet.title}
-                                        </PreviewItem>
-                                    )
-                                }
-                            })}
-                        </PreviewContainer>
-                    </PlayerContainer>
-                ) : (
-                        <div>Loading</div>
-                    )}
-            </Container>
-        </StyledApp>
+                    ) : (
+                            <div>Loading</div>
+                        )}
+                </Segment>
+                <Menu inverted vertical size="massive">
+                    {playlist.videos.map((video, i) => {
+                        if (i <= currentIndex + 4 && i >= currentIndex) {
+                            return (
+                                <PreviewItem
+                                    key={i}
+                                    image={video.snippet.thumbnails.default.url}
+                                >
+                                    {video.snippet.title}
+                                </PreviewItem>
+                            )
+                        }
+                    })}
+                </Menu>
+
+            </div>
+        </StyledApp >
     )
 }
 

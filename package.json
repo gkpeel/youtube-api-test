@@ -38,6 +38,7 @@
 		"google-auth-library": "^6.0.0",
 		"googleapis": "^49.0.0",
 		"iso8601-duration": "^1.2.0",
-		"react-player": "^1.15.3"
+		"react-player": "^1.15.3",
+		"semantic-ui-react": "^0.88.2"
 	}
 }
