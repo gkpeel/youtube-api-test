@@ -3,9 +3,9 @@ import getData from '../apis/youtube'
 import Header from './Header'
 import VideoPlayer from './VideoPlayer'
 import PreviewItem from './PreviewItem'
-import { StyledApp, Container, PlayerContainer } from '../utils/containers'
+import { StyledApp } from '../utils/containers'
 import TopMenu from './Menu'
-import { Sidebar, Segment, Menu } from 'semantic-ui-react'
+import { Loader, Menu, Segment, Progress, Transition } from 'semantic-ui-react'
 
 function App() {
     // Hardcoded Youtube Video IDs
@@ -27,39 +27,47 @@ function App() {
     }, [])
 
     // Callback passed to player that increments the playlist array once the set playback time is reached
-    const incrementIndex = () => { setCurrentIndex(currentIndex + 1) }
+    const incrementIndex = () => {
+        setCurrentIndex(currentIndex + 1)
+    }
 
     return (
         <StyledApp>
             <TopMenu />
-            <div style={{ flexGrow: 1, display: "flex", alignItems: "stretch" }}>
-                <Segment inverted style={{ flexGrow: 1 }}>
-                    {contentLoaded ? (
+            <div style={{ paddingLeft: "21px", paddingRight: "21px" }}>
+                <Progress size="tiny" color="teal" inverted percent={72} indicating style={{ marginTop: "8px", marginBottom: "6px" }} />
+                <Progress size="tiny" color="blue" inverted percent={46} indicating style={{ marginTop: "6px", marginBottom: "8px" }} />
+            </div>
+            {contentLoaded ? (
+                <div style={{ flexGrow: 1, display: "flex", alignItems: "stretch" }}>
+                    <Segment inverted very padded style={{ flexGrow: 1, marginBottom: 0 }}>
                         <VideoPlayer
                             currentVideo={playlist.videos[currentIndex].id}
                             duration={playlist.videos[currentIndex].contentDetails.duration}
                             incrementIndex={incrementIndex}
                         />
-                    ) : (
-                            <div>Loading</div>
-                        )}
-                </Segment>
-                <Menu inverted vertical size="massive">
-                    {playlist.videos.map((video, i) => {
-                        if (i <= currentIndex + 4 && i >= currentIndex) {
+                    </Segment>
+                    <Transition.Group
+                        as={Menu}
+                        animation="fade up"
+                        duration="600"
+                        inverted
+                        vertical
+                        size="massive"
+                        style={{ marginTop: 0, height: '100%', overflow: 'hidden' }}
+                    >
+                        {playlist.videos.map((video, i) => {
                             return (
-                                <PreviewItem
-                                    key={i}
-                                    image={video.snippet.thumbnails.default.url}
-                                >
+                                <PreviewItem key={i} image={video.snippet.thumbnails.default.url}>
                                     {video.snippet.title}
                                 </PreviewItem>
                             )
-                        }
-                    })}
-                </Menu>
-
-            </div>
+                        })}
+                    </Transition.Group>
+                </div>
+            ) : (
+                    <Loader inverted size='massive'>Loading</Loader>
+                )}
         </StyledApp >
     )
 }
