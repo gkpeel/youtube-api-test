@@ -1,52 +1,43 @@
+// Packages
 import React, { useState, useEffect } from 'react'
-import getData from '../apis/youtube'
+import { Loader, Menu, Segment, Progress, Transition } from 'semantic-ui-react'
+
+// Apis
+import useYoutubeApi from '../apis/youtube'
+
+// Components
+import TopMenu from './Menu'
 import Header from './Header'
 import VideoPlayer from './VideoPlayer'
 import PreviewItem from './PreviewItem'
+
+// Styles
 import { StyledApp } from '../utils/containers'
-import TopMenu from './Menu'
-import { Loader, Menu, Segment, Progress, Transition } from 'semantic-ui-react'
+
+// Data
+import { playlistIds } from '../mock-data'
+
 
 function App() {
-    // Hardcoded Youtube Video IDs
-    const playlistIds = ['Wm54XyLwBAk', 'ifwc5xgI3QM', 'gG_dA32oH44', 'KfVIRigPyws', '4NRXx6U8ABQ', 'wXhTHyIgQ_U', 'pok8H_KF1FA'];
 
-    const [playlist, setPlaylist] = useState({ videos: [] })
-    const [currentIndex, setCurrentIndex] = useState(null)
-    const [contentLoaded, setContentLoaded] = useState(false)
-
-    // Use YT Api from playlist array, set startIndex, set loaded to create render
-    useEffect(() => {
-        const fetchData = async (arr) => {
-            const result = await getData(arr.join(','))
-            setPlaylist({ videos: result.data.items })
-            setCurrentIndex(0)
-            setContentLoaded(true)
-        }
-        fetchData(playlistIds)
-    }, [])
+    const playlist = useYoutubeApi(playlistIds)
 
     // Callback passed to player that increments the playlist array once the set playback time is reached
     const incrementIndex = () => {
-        setCurrentIndex(currentIndex + 1)
+        setPlaylist({ ...playlist, currentIndex: playlist.currentIndex + 1 })
     }
 
     return (
         <StyledApp>
             <TopMenu />
-            <div style={{ paddingLeft: "21px", paddingRight: "21px" }}>
-                <Progress size="tiny" color="teal" inverted percent={72} indicating style={{ marginTop: "8px", marginBottom: "6px" }} />
-                <Progress size="tiny" color="blue" inverted percent={46} indicating style={{ marginTop: "6px", marginBottom: "8px" }} />
-            </div>
-            {contentLoaded ? (
+            {playlist.isLoaded ? (
                 <div style={{ flexGrow: 1, display: "flex", alignItems: "stretch" }}>
-                    <Segment inverted very padded style={{ flexGrow: 1, marginBottom: 0 }}>
-                        <VideoPlayer
-                            currentVideo={playlist.videos[currentIndex].id}
-                            duration={playlist.videos[currentIndex].contentDetails.duration}
-                            incrementIndex={incrementIndex}
-                        />
-                    </Segment>
+                    <VideoPlayer
+                        currentIndex={playlist.currentIndex}
+                        currentVideo={playlist.videos[playlist.currentIndex].id}
+                        duration={playlist.videos[playlist.currentIndex].contentDetails.duration}
+                        incrementIndex={incrementIndex}
+                    />
                     <Transition.Group
                         as={Menu}
                         animation="fade up"

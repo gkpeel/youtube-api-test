@@ -3,7 +3,7 @@ import { Container, Header, Icon, Menu, Segment } from 'semantic-ui-react'
 
 const TopMenu = (props) => {
     return (
-        <Container fluid inverted>
+        <Container fluid>
             <Menu
                 inverted
                 attached="top"

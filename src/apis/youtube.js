@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
 const getData = (vidId) => {
@@ -16,4 +17,36 @@ const getData = (vidId) => {
 	return axios.get('/videos', options)
 };
 
-export default getData;
+function useYoutubeApi(dataArr) {
+	const [playlist, setPlaylist] = useState({
+		contentLoaded: false,
+		currentIndex: null,
+		videos: []
+	})
+
+	// Use YT Api from playlist array, set startIndex, set loaded to create render
+	useEffect(() => {
+		async function fetchData(arr) {
+			try {
+				const result = await getData(arr.join(','))
+				setPlaylist({
+					isLoaded: true,
+					isPlaying: true,
+					currentIndex: 0,
+					videos: result.data.items
+				})
+			} catch (err) {
+				console.log(err)
+			}
+		}
+		if (!playlist.contentLoaded) {
+			fetchData(dataArr)
+		}
+	}, [])
+
+	return playlist
+}
+
+
+export default useYoutubeApi;
+
