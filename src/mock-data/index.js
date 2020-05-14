@@ -6,7 +6,8 @@ const playlistIds = [
     'KfVIRigPyws',
     '4NRXx6U8ABQ',
     'wXhTHyIgQ_U',
-    'pok8H_KF1FA'
+    'pok8H_KF1FA',
+    'WB6wYVCEY3w'
 ];
 
 export { playlistIds }

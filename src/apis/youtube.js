@@ -17,10 +17,9 @@ const getData = (vidId) => {
 	return axios.get('/videos', options)
 };
 
-function useYoutubeApi(dataArr) {
+const useYoutubeApi = (dataArr) => {
 	const [playlist, setPlaylist] = useState({
 		contentLoaded: false,
-		currentIndex: null,
 		videos: []
 	})
 
@@ -32,7 +31,6 @@ function useYoutubeApi(dataArr) {
 				setPlaylist({
 					isLoaded: true,
 					isPlaying: true,
-					currentIndex: 0,
 					videos: result.data.items
 				})
 			} catch (err) {
@@ -46,7 +44,6 @@ function useYoutubeApi(dataArr) {
 
 	return playlist
 }
-
 
 export default useYoutubeApi;
 
